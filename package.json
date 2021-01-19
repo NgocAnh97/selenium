@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test-d": "mocha src/specs/login_test.js --timeout 15000"
+    "test": "mocha src/specs/login_test.js --timeout 15000"
   },
   "keywords": [],
   "author": "",
