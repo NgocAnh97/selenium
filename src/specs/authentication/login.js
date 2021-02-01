@@ -1,13 +1,23 @@
-import pkg from 'selenium-webdriver'
-import { setup } from '../../helpers/browsers.js'
-import config from '../../define/config.js'
+import axios from "axios";
+import pkg from 'selenium-webdriver';
+import config from '../../define/config.js';
+import {setup} from '../../helpers/browsers.js';
 
-const { By, until } = pkg
+const {By, until} = pkg;
 
 describe("Reputa Automation Authentication test suite", () => {
   let driver = null;
 
   before(() => driver = setup())
+
+  it('should should login successfully and return token', () => {
+    axios.post(`${config.apiCollection.login}`, {
+      "username": config.username,
+      "password": config.password
+    }).then((result) => {
+      expect(result.status).toBe(200);
+    });
+  });
 
   it("should login successfully", async () => {
     try {
@@ -15,8 +25,8 @@ describe("Reputa Automation Authentication test suite", () => {
       await driver.get(config.url);
 
       await driver.findElement(By.xpath("//span[@class='navbar-text']")).click();
-      await driver.findElement(By.xpath("//input[@type='text']")).sendKeys("tesvtel@gmail.com");
-      await driver.findElement(By.xpath("//input[@type='password']")).sendKeys("123456aA@@");
+      await driver.findElement(By.xpath("//input[@type='text']")).sendKeys(config.username);
+      await driver.findElement(By.xpath("//input[@type='password']")).sendKeys(config.password);
       await driver.findElement(By.xpath("//button[@type='submit']")).click();
 
       await driver.getTitle().then(function (title) {
