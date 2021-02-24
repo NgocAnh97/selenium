@@ -1,6 +1,7 @@
 import config from '../define/config.js'
 import webdriver from 'selenium-webdriver'
 
+
 let driver = null;
 
 export const setup = () => {
@@ -26,7 +27,8 @@ export const setDriver = (browserType) => {
 }
 
 export const initFireFoxDriver = () => {
-  driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.firefox()).build();
+  driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.firefox())
+  .build();
   driver.manage().window().maximize()
       .then(() => console.log(""))
       .catch((e) => console.log(e))
@@ -35,7 +37,9 @@ export const initFireFoxDriver = () => {
 }
 
 export const initChromeDriver = () => {
-  driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.chrome()).build();
+  driver = new webdriver.Builder()
+  .withCapabilities(webdriver.Capabilities.chrome())
+  .build();
   driver.manage().window().maximize()
       .then(() => console.log(""))
       .catch((e) => console.log(e))
