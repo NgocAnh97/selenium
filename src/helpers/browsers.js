@@ -1,6 +1,10 @@
 import config from '../define/config.js'
 import webdriver from 'selenium-webdriver'
+import chrome from 'selenium-webdriver/chrome'
 
+var options   = new chrome.Options();
+options.setBrowserName('chrome')
+options.addArguments('--headless');
 
 let driver = null;
 
@@ -39,6 +43,7 @@ export const initFireFoxDriver = () => {
 export const initChromeDriver = () => {
   driver = new webdriver.Builder()
   .withCapabilities(webdriver.Capabilities.chrome())
+  .setChromeOptions(options)
   .build();
   driver.manage().window().maximize()
       .then(() => console.log(""))
