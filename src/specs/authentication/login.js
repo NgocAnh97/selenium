@@ -2,8 +2,6 @@ import axios from "axios";
 import pkg from 'selenium-webdriver';
 import config from '../../define/config.js';
 import { setup } from '../../helpers/browsers.js';
-// import '@testing-library/jest-dom';
-// import {expect} from '@testing-library/jest-dom';
 import pkg2, { AssertionError } from "chai";
 import { reporters } from "mocha";
 import { ConsoleReporter } from "jasmine";
