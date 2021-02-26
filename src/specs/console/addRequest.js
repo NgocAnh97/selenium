@@ -7,35 +7,31 @@ import pkg2 from "chai";
 const { assert } = pkg2;
 const { By, until } = pkg;
 
-describe("~~~Reputa Automation Sign up test suite~~~", () => {
+describe("~~~Reputa Automation add request test suite~~~", () => {
   let driver = null;
   var result = null;
 
   before(() => driver = setup())
 
-  it('should sign up success', async () => {
+  it('should add request success', async () => {
     let postData = {
-      "email": config.emailSignUp,
-      "full_name": config.full_name,
-      "industry_id": config.industry_id,
-      "location": config.location,
-      "organization_name": config.organization_name,
-      "phone": config.phone,
-      "password": config.passwordSignUp,
-      "username": config.usernameSignUp
+      "package_type": config.package_type,
+      "type": config.type
     };
     let axiosConfig = {
       headers: {
         "Content-Type": "application/json",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36",
-        "Accept": "*/*"
+        "Accept": "*/*",
+        "Authorization": "VTCCSSO eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN2dGVsODZAeW9wbWFpbC5jb20iLCJpYXQiOjE2MTQyMzYwMzQsImV4cCI6MTYyMjAxMjAzNCwidHRsIjo3Nzc2MDAwMDAwLCJlbWFpbCI6InRlc3Z0ZWw4NkB5b3BtYWlsLmNvbSIsInBlcnNvbi1uYW1lIjoidGVzdnRlbDg2IiwidXNlci1pZCI6IjEwMDg4In0.hnXAKehHQ8jcDvER3Ye3GfNb3i84KXXPG-W0be9yeE0"
       },
     }
-    result = await axios.post(`${config.apiCollection.signup}`, postData, axiosConfig)
+    result = await axios.post(`${config.apiCollection.addRequest}`, postData, axiosConfig)
 
-    if (result && assert.equal(result.data.code, 0)) {
+    if (result && result.data.code === 1) {
       console.log(result)
       console.log(`Message: ${result.data.message}`);
+    //   assert.equal(result.data.code, 0);
     }
   });
 

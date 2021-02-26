@@ -2,40 +2,54 @@ import axios from "axios";
 import pkg from 'selenium-webdriver';
 import config from '../../define/config.js';
 import { setup } from '../../helpers/browsers.js';
-import pkg2, { AssertionError } from "chai";
-import { reporters } from "mocha";
-import { ConsoleReporter } from "jasmine";
+import pkg2 from "chai";
 const { assert } = pkg2;
-const { By, until } = pkg;
+const { By, until, titleContains } = pkg;
+import ExcelJS from 'exceljs';
+import array from './readExcelFile.js'
+
 
 describe("~~~Reputa Automation Authentication test suite~~~", () => {
   let driver = null;
 
   before(() => driver = setup())
 
-  it('should should login successfully and return token', () => {
-    try {
-      axios.post(`${config.apiCollection.login}`, {
-        "username": config.username,
-        "password": config.password
-      }).then((response) => {
-        assert.equal(response.data.code, 10, 'Code should be done');
-        // assert
-        console.log('Status Text: ' + response.statusText);
-        console.log('Message: ' + response.data.message);
-      }).catch(e => {
-        console.log('Loi: '+ e);
-        if(AssertionError){
-          console.log("Assert E");
-          driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Login Passed!"}}');
-          ConsoleReporter("Fail");
-        } else {
-          driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Login Fail!"}}');
-          console.log("Same");
-        }
-    });
-    } catch(e){console.log(e)}
-  });
+
+  var result;
+  const workbook = new ExcelJS.Workbook();
+  var worksheet = workbook.getWorksheet("Sheet1");
+
+  it("should login success", async () => {
+    for (let index = 0; index < array.length; index++) {
+      result = await axios.post(`${config.apiCollection.login}`, {
+        username: array[index].username,
+        password: array[index].password
+      });
+      if (result && result.data) {
+        console.log(`Message: ${result.data.message}`);
+        // try {
+        //   assert.equal(result.data.code, 10);
+        // } catch (AssertionError) {
+        //   assert.equal(result.data.code, 21);
+        // }
+        var cell = worksheet.getCell(3);
+        console.log(cell);
+        cell.getRow(index).value = result.data.code;
+        cell.commit();
+        workbook.xlsx.writeFile("D:/reputa_automation/src/data/loginCase.xlsx");
+      }
+    }
+  })
+
+  // it("Verify the Web heading title text is displayed", async () => {
+  //   await driver.manage().deleteAllCookies();
+  //   await driver.get(config.url);
+  //   driver.getTitle()
+  //     .then((title) => {
+  //       console.log("Title is: " + title);
+  //       assert.equal(titleContains, 'Reputa');
+  //     }).catch(e => console.log(e))
+  // })
 
   // it("should login successfully", async () => {
   //   try {

@@ -1,5 +1,5 @@
 import config from '../define/config.js'
-import webdriver, {Builder} from 'selenium-webdriver'
+import webdriver, { Builder } from 'selenium-webdriver'
 import chrome from 'selenium-webdriver/chrome.js'
 import chromedriver from 'chromedriver'
 
@@ -45,9 +45,10 @@ export const initChromeDriver = () => {
         .forBrowser('chrome')
         .setChromeOptions(new chrome.Options().headless())
         .build();
-    driver.manage().window().maximize()
-        .then(() => console.log(""))
-        .catch((e) => console.log(e))
+
+    // driver.manage().window().maximize()
+    //     .then(() => console.log(""))
+    //     .catch((e) => console.log(e))
 
     return driver;
 }
